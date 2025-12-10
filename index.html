@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>שמואל מלמד | מפתח Senior Full Stack</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%236366f1'/><text x='50' y='70' font-size='60' text-anchor='middle' fill='white' font-family='Arial, sans-serif' font-weight='bold'>SM</text></svg>">
+     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+         :root {
+            /* --- PREMIUM DARK THEME --- */
+            --bg-core: #0f172a;        /* Slate 900 */
+            --bg-secondary: #1e293b;   /* Slate 800 */
+            
+            /* Gradients & Accents */
+            --primary: #38bdf8;        /* Sky 400 */
+            --primary-dim: #0ea5e9;    /* Sky 500 */
+            --secondary: #818cf8;      /* Indigo 400 */
+            --accent: #c084fc;         /* Purple 400 */
+            
+            /* Text Colors */
+            --text-main: #f1f5f9;      /* Slate 100 */
+            --text-muted: #94a3b8;     /* Slate 400 */
+            --text-dark: #0f172a;      /* For buttons/tags */
+
+            /* Glassmorphism */
+            --glass-bg: rgba(30, 41, 59, 0.7); 
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --gradient-main: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg-core);
+            color: var(--text-main);
+            line-height: 1.7;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- BACKGROUND EFFECTS --- */
+        .tech-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            background: radial-gradient(circle at top center, #1e293b 0%, #0f172a 100%);
+        }
+
+        .grid-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(56, 189, 248, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        }
+
+        /* Orbs */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: float 25s infinite ease-in-out;
+            z-index: 0;
+        }
+        .orb1 { width: 400px; height: 400px; background: var(--primary-dim); top: -100px; left: 20%; }
+        .orb2 { width: 500px; height: 500px; background: #4f46e5; bottom: -100px; right: 10%; animation-delay: -5s; }
+        .orb3 { width: 300px; height: 300px; background: #d946ef; top: 40%; left: -100px; animation-delay: -10s; opacity: 0.2; }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(30px, -30px); }
+        }
+
+        /* --- RESTORED FLOATING SHAPES --- */
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .shape {
+            position: absolute;
+            border: 2px solid rgba(56, 189, 248, 0.15); /* Subtler border for dark theme */
+            animation: floatShape 20s infinite ease-in-out;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.05);
+        }
+
+        .shape1 { width: 100px; height: 100px; border-radius: 50%; top: 20%; left: 10%; animation-delay: 0s; border-color: rgba(56, 189, 248, 0.2); }
+        .shape2 { width: 80px; height: 80px; top: 60%; right: 15%; animation-delay: -5s; transform: rotate(45deg); border-color: rgba(129, 140, 248, 0.2); }
+        .shape3 { width: 120px; height: 120px; border-radius: 30%; bottom: 15%; left: 60%; animation-delay: -10s; border-color: rgba(192, 132, 252, 0.2); }
+        .shape4 { width: 60px; height: 60px; border-radius: 50%; top: 40%; right: 30%; animation-delay: -7s; border-color: rgba(56, 189, 248, 0.2); }
+
+        @keyframes floatShape {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); opacity: 0.2; }
+            25% { transform: translate(30px, -40px) rotate(90deg); opacity: 0.4; }
+            50% { transform: translate(-20px, 30px) rotate(180deg); opacity: 0.2; }
+            75% { transform: translate(40px, 20px) rotate(270deg); opacity: 0.5; }
+        }
+
+        /* --- LAYOUT & NAV --- */
+        .content-wrapper { position: relative; z-index: 1; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+
+        nav {
+            position: fixed; top: 0; width: 100%;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            z-index: 1000; padding: 1.2rem 0;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        nav .container { display: flex; justify-content: space-between; align-items: center; }
+
+        .logo {
+            font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px;
+            background: var(--gradient-main); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .nav-right { display: flex; align-items: center; gap: 2rem; }
+        .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; transition: all 0.3s; font-size: 0.95rem; font-weight: 500; }
+        .nav-links a:hover, .nav-links a.active { color: var(--primary); text-shadow: 0 0 10px rgba(56, 189, 248, 0.4); }
+
+        .lang-switch {
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border);
+            color: var(--text-main); padding: 0.5rem 1.2rem; border-radius: 50px;
+            cursor: pointer; font-size: 0.9rem; transition: all 0.3s;
+        }
+        .lang-switch:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--primary); }
+
+        /* --- HERO --- */
+        #hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding-top: 80px; text-align: center; }
+        .hero-content { max-width: 900px; }
+
+        .profile-photo {
+            width: 180px; height: 180px; border-radius: 50%; margin: 0 auto 2.5rem;
+            border: 4px solid rgba(56, 189, 248, 0.3);
+            box-shadow: 0 0 40px rgba(56, 189, 248, 0.2); object-fit: cover;
+            animation: pulse-glow 3s infinite ease-in-out; background: #1e293b; 
+        }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 40px rgba(56, 189, 248, 0.2); border-color: rgba(56, 189, 248, 0.3); }
+            50% { box-shadow: 0 0 60px rgba(129, 140, 248, 0.4); border-color: rgba(129, 140, 248, 0.5); }
+        }
+
+        .hero-title { font-size: 4.5rem; margin-bottom: 1rem; letter-spacing: -2px; background: linear-gradient(to right, #f1f5f9 20%, #94a3b8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-subtitle { font-size: 1.8rem; margin-bottom: 2rem; background: var(--gradient-main); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 600; }
+        .hero-description { font-size: 1.2rem; color: var(--text-muted); max-width: 780px; margin: 0 auto 3rem; line-height: 1.8; }
+
+        .cta-buttons { display: flex; gap: 1.5rem; justify-content: center; }
+        .btn { padding: 1rem 2.5rem; border-radius: 50px; text-decoration: none; font-weight: 600; transition: all 0.3s; display: inline-flex; align-items: center; justify-content: center; }
+        .btn-primary { background: var(--gradient-main); color: white; box-shadow: 0 10px 25px -5px rgba(56, 189, 248, 0.4); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 35px -5px rgba(56, 189, 248, 0.6); }
+        .btn-secondary { background: rgba(255, 255, 255, 0.05); color: var(--text-main); border: 1px solid var(--glass-border); }
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--primary); }
+
+        /* --- SECTIONS --- */
+        section { padding: 6rem 0; }
+        .section-title { font-size: 2.5rem; font-weight: 700; text-align: center; margin-bottom: 4rem; color: var(--text-main); }
+        .section-title::after { content: ''; display: block; width: 60px; height: 4px; background: var(--gradient-main); margin: 1rem auto; border-radius: 2px; }
+
+        /* Glass Card */
+        .glass-card {
+            background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px;
+            padding: 2.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); backdrop-filter: blur(10px);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        .glass-card:hover { border-color: rgba(56, 189, 248, 0.3); transform: translateY(-5px); }
+
+        /* About */
+        #about .about-content { max-width: 900px; margin: 0 auto; text-align: center; color: var(--text-muted); font-size: 1.15rem; }
+
+        /* --- TIMELINE FIXED (RTL/LTR) --- */
+        .timeline { position: relative; max-width: 1000px; margin: 0 auto; }
+        
+        /* Central Line */
+        .timeline::before {
+            content: ''; position: absolute; left: 50%; transform: translateX(-50%);
+            width: 2px; height: 100%; background: rgba(255, 255, 255, 0.1);
+        }
+
+        .timeline-item { margin-bottom: 3rem; position: relative; width: 100%; }
+
+        .timeline-content {
+            width: 45%; 
+            background: var(--glass-bg); 
+            border: 1px solid var(--glass-border);
+            padding: 2rem; border-radius: 16px; backdrop-filter: blur(12px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .timeline-content:hover { border-color: var(--primary); box-shadow: 0 0 30px rgba(56, 189, 248, 0.1); }
+
+        /* --- LTR LOGIC (English) --- */
+        /* Text alignment always Left for English */
+        [dir="ltr"] .timeline-content { text-align: left; }
+        
+        /* Odd: Left Box */
+        [dir="ltr"] .timeline-item:nth-child(odd) .timeline-content {
+            margin-right: 55%; /* Push from right to sit on left */
+            margin-left: 0;
+        }
+        /* Even: Right Box */
+        [dir="ltr"] .timeline-item:nth-child(even) .timeline-content {
+            margin-left: 55%; /* Push from left to sit on right */
+            margin-right: 0;
+        }
+
+        /* --- RTL LOGIC (Hebrew) --- */
+        /* Text alignment always Right for Hebrew */
+        [dir="rtl"] .timeline-content { text-align: right; }
+
+        /* Odd: Right Box (Start side in RTL) */
+        [dir="rtl"] .timeline-item:nth-child(odd) .timeline-content {
+            margin-left: 55%; /* Push from left to sit on right */
+            margin-right: 0;
+        }
+        /* Even: Left Box (End side in RTL) */
+        [dir="rtl"] .timeline-item:nth-child(even) .timeline-content {
+            margin-right: 55%; /* Push from right to sit on left */
+            margin-left: 0;
+        }
+
+        /* Timeline Dot */
+        .timeline-icon {
+            position: absolute; left: 50%; transform: translateX(-50%);
+            width: 50px; height: 50px; background: #0f172a; border: 2px solid var(--primary);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; z-index: 10; box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+        }
+
+        .company-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+        .company-logo {
+            width: 45px; height: 45px; background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: bold; flex-shrink: 0;
+        }
+
+        .company-info h3 { margin: 0; color: var(--text-main); font-size: 1.2rem; }
+        .company-info a { color: var(--primary); text-decoration: none; font-size: 0.9rem; }
+        .job-title { color: var(--secondary); font-weight: 600; margin-bottom: 0.5rem; font-size: 1.1rem; }
+        .duration { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem; font-family: monospace; }
+        
+        .responsibilities { list-style: none; margin-top: 1rem; color: var(--text-muted); padding: 0; }
+        .responsibilities li { margin-bottom: 0.5rem; position: relative; padding-inline-start: 1.5rem; }
+        .responsibilities li::before { 
+            content: '•'; position: absolute; left: 0; color: var(--primary); font-size: 1.5rem; line-height: 1rem; 
+        }
+        [dir="rtl"] .responsibilities li::before { left: auto; right: 0; }
+
+        .tech-stack { margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .tech-tag {
+            background: rgba(56, 189, 248, 0.1); color: var(--primary); padding: 0.4rem 0.8rem;
+            border-radius: 6px; font-size: 0.8rem; border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        /* Skills */
+        .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; max-width: 1100px; margin: 0 auto; }
+        .skill-card {
+            background: linear-gradient(145deg, rgba(30,41,59,0.7), rgba(15,23,42,0.8));
+            border: 1px solid var(--glass-border); padding: 2.5rem 2rem; border-radius: 20px;
+            text-align: center; transition: 0.3s;
+        }
+        .skill-card:hover {
+            transform: translateY(-10px); border-color: var(--primary);
+            background: linear-gradient(145deg, rgba(30,41,59,0.9), rgba(15,23,42,0.95));
+            box-shadow: 0 10px 30px -10px rgba(56, 189, 248, 0.2);
+        }
+        .skill-icon { font-size: 3rem; margin-bottom: 1.5rem; }
+        .skill-name { font-size: 1.3rem; color: var(--text-main); margin-bottom: 0.5rem; font-weight: 700; }
+        .skill-items { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; }
+
+        /* Education */
+        .education-content {
+            background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 3rem;
+            border-radius: 20px; max-width: 800px; margin: 0 auto; position: relative; overflow: hidden;
+        }
+        .education-content::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--gradient-main); }
+        [dir="rtl"] .education-content::before { left: auto; right: 0; } /* Fix accent line direction */
+        
+        .education-info h3 { color: var(--primary); font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .education-info p { color: var(--text-muted); }
+        .degree { color: var(--text-main) !important; font-size: 1.2rem; font-weight: 600; margin-top: 1rem; }
+        .btn-diploma { margin-top: 1.5rem; display: inline-block; color: var(--secondary); text-decoration: none; font-weight: 600; border-bottom: 1px dashed var(--secondary); padding-bottom: 2px; }
+        .btn-diploma:hover { color: var(--primary); border-color: var(--primary); }
+
+        /* Contact */
+        .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; max-width: 900px; margin: 0 auto; }
+        .contact-card {
+            background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); padding: 2rem;
+            border-radius: 16px; text-align: center; text-decoration: none; transition: 0.3s;
+        }
+        .contact-card:hover { background: rgba(255,255,255,0.06); border-color: var(--primary); transform: translateY(-5px); }
+        .contact-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+        .contact-card h3 { color: var(--text-main); margin-bottom: 0.5rem; }
+        .contact-card p { color: var(--text-muted); }
+
+        /* Footer */
+        footer { text-align: center; padding: 3rem; color: var(--text-muted); border-top: 1px solid var(--glass-border); font-size: 0.9rem; }
+
+        /* --- RESPONSIVE FIXES --- */
+        @media (max-width: 768px) {
+            .hero-title { font-size: 3rem; }
+            .nav-links { display: none; }
+            
+            /* LTR Mobile */
+            [dir="ltr"] .timeline::before { left: 30px; }
+            [dir="ltr"] .timeline-icon { left: 30px; transform: translateX(-50%); }
+            [dir="ltr"] .timeline-content { 
+                width: calc(100% - 70px); 
+                margin: 0 !important; 
+                margin-left: 70px !important;
+                text-align: left;
+            }
+
+            /* RTL Mobile */
+            [dir="rtl"] .timeline::before { left: auto; right: 30px; }
+            [dir="rtl"] .timeline-icon { left: auto; right: 30px; transform: translateX(50%); }
+            [dir="rtl"] .timeline-content { 
+                width: calc(100% - 70px); 
+                margin: 0 !important; 
+                margin-right: 70px !important;
+                text-align: right;
+            }
+        }
+    </style>
+</head>
+<body dir="rtl">
+    <div class="tech-background">
+        <div class="grid-overlay"></div>
+        <div class="orb orb1"></div>
+        <div class="orb orb2"></div>
+        <div class="orb orb3"></div>
+        <div class="floating-shapes">
+            <div class="shape shape1"></div>
+            <div class="shape shape2"></div>
+            <div class="shape shape3"></div>
+            <div class="shape shape4"></div>
+        </div>
+    </div>
+
+    <div class="content-wrapper">
+    <nav>
+        <div class="container">
+            <div class="logo">SM</div>
+            <div class="nav-right">
+                <ul class="nav-links">
+                    <li><a href="#hero" class="active" data-en="Home" data-he="בית">Home</a></li>
+                    <li><a href="#about" data-en="About" data-he="אודות">About</a></li>
+                    <li><a href="#experience" data-en="Experience" data-he="ניסיון">Experience</a></li>
+                    <li><a href="#skills" data-en="Skills" data-he="כישורים">Skills</a></li>
+                    <li><a href="#education" data-en="Education" data-he="השכלה">Education</a></li>
+                    <li><a href="#contact" data-en="Contact" data-he="צור קשר">Contact</a></li>
+                </ul>
+                <button class="lang-switch" onclick="toggleLanguage()">🌐 עברית</button>
+            </div>
+        </div>
+    </nav>
+
+    <section id="hero">
+        <div class="hero-content">
+            <img src="profile-photo.jpg" alt="Shmulik Melamed" class="profile-photo" id="profilePhoto">
+            <h1 class="hero-title" data-en="Shmulik Melamed" data-he="שמואל מלמד">Shmulik Melamed</h1>
+            <p class="hero-subtitle" data-en="Senior C# Full Stack Developer" data-he="מפתח C# Senior Full Stack">Senior C# Full Stack Developer</p>
+            <p class="hero-description" 
+                data-en="Over 13 years of extensive professional knowledge in communications and software.<br> Independent, a team player, fast learner, and highly motivated."
+                data-he="מעל 13 שנים של ידע מקצועי נרחב בתקשורת ותוכנה.<br> עצמאי, שחקן צוות, לומד מהיר ומלא מוטיבציה.">
+                Over 13 years of extensive professional knowledge in communications and software.<br> Independent, a team player, fast learner, and highly motivated.
+            </p>
+            <div class="cta-buttons">
+                <a href="#contact" class="btn btn-primary" data-en="Get In Touch" data-he="צור קשר">Get In Touch</a>
+                <a href="#" class="btn btn-secondary" id="downloadCV" onclick="downloadCV(); return false;" data-en="Download CV" data-he="הורד קו״ח">Download CV</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="container">
+            <h2 class="section-title" data-en="About Me" data-he="אודותיי">About Me</h2>
+            <div class="about-content glass-card">
+    <p data-en="I'm a seasoned Senior Full Stack Developer with over ten years of experience in software development and communications.<br>Specialized in building enterprise systems, web solutions, and complex integrations that deliver high performance.<br>Experienced across web, mobile, and desktop applications, leading technical processes and focused on innovation and efficiency.<br>" 
+   data-he="אני מפתח Senior Full Stack עם מעל עשר שנות ניסיון בפיתוח תוכנה ותקשורת.<br>מומחה בבניית מערכות ארגוניות, פתרונות אינטרנט ואינטגרציות מורכבות המספקות ביצועים גבוהים.<br>בעל ניסיון רחב בפיתוח ווב, מובייל ואפליקציות שולחן עבודה, מוביל תהליכים טכנולוגיים ומכוון לחדשנות ויעילות.<br>">
+    I'm a seasoned Senior Full Stack Developer with over ten years of experience...
+</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="experience">
+        <div class="container">
+            <h2 class="section-title" data-en="Professional Experience" data-he="ניסיון מקצועי">Professional Experience</h2>
+            <div class="timeline" id="timeline">
+                </div>
+        </div>
+    </section>
+
+    <section id="skills">
+        <div class="container">
+            <h2 class="section-title" data-en="Technical Arsenal" data-he="ארגז כלים טכני">Technical Arsenal</h2>
+            <div class="skills-grid" id="skillsGrid">
+                </div>
+        </div>
+    </section>
+
+    <section id="education">
+        <div class="container">
+            <h2 class="section-title" data-en="Education" data-he="השכלה">Education</h2>
+            <div class="education-content">
+                <div class="education-header">
+                    <div class="education-info">
+                        <h3 data-en="Shenkar College of Engineering and Design" data-he="מכללת שנקר להנדסה ועיצוב">Shenkar College of Engineering and Design</h3>
+                        <p data-en="2009 - 2012" data-he="2009 - 2012">2009 - 2012</p>
+                        <p class="degree" data-en="B.Sc. in Computer Software Engineering" data-he="תואר ראשון (B.Sc.) בהנדסת תוכנה">B.Sc. in Computer Software Engineering</p>
+                    </div>
+                    <a href="#" class="btn-diploma" id="downloadDiploma" onclick="downloadDiploma(); return false;" data-en="View Diploma ↗" data-he="צפה בתעודה ↗">View Diploma ↗</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="container">
+            <h2 class="section-title" data-en="Let's Connect" data-he="בוא נדבר">Let's Connect</h2>
+            <div class="contact-grid">
+                <a href="mailto:Smilk12@gmail.com" class="contact-card">
+                    <div class="contact-icon">📧</div>
+                    <h3 data-en="Email" data-he="דוא״ל">Email</h3>
+                    <p>Smilk12@gmail.com</p>
+                </a>
+                <a href="https://www.linkedin.com/in/shmulik-melamed-285a8238/" target="_blank" class="contact-card">
+                    <div class="contact-icon">💼</div>
+                    <h3>LinkedIn</h3>
+                    <p data-en="View Profile" data-he="צפה בפרופיל">View Profile</p>
+                </a>
+                <a href="https://github.com/smilk12" target="_blank" class="contact-card">
+                    <div class="contact-icon">💻</div>
+                    <h3>GitHub</h3>
+                    <p data-en="Inspect Code" data-he="צפה בקוד">Inspect Code</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p data-en="© 2024 Shmulik Melamed. Built with precision." data-he="© 2024 שמואל מלמד. נבנה בדייקנות.">© 2024 Shmulik Melamed. Built with precision.</p>
+    </footer>
+</div>
+    <script>
+        let currentLang = 'en'; 
+
+        const content = {
+            en: {
+                experience: [
+                    {
+                        company: "Maman",
+                        logo: "M",
+                        website: "https://www.maman.co.il",
+                        title: "Senior C# Full Stack Developer",
+                        duration: "2024 - Present",
+                        responsibilities: [
+                            "Developing core operational systems serving hundreds of daily users",
+                            "Architecting WCF services and layered architecture (UI, BL, DAL)",
+                            "Managing full lifecycle: Design, implementation, and testing",
+                            "Leading code migration across Freeze, Test, Dev, and Prod environments"
+                        ],
+                        tech: ["C# WinForms", "WCF", "SQL Server", "IIS", "AngularJS"]
+                    },
+                    {
+                        company: "EMUSE Israel",
+                        logo: "E",
+                        website: "https://www.emuse.co.il",
+                        title: "Senior C# Full Stack Developer",
+                        duration: "2019 - 2024",
+                        responsibilities: [
+                            "Built B2B/B2C e-commerce platforms with .Net Core & Swagger",
+                            "Integrated complex APIs with SAP ERP and Priority systems",
+                            "Developed invoice portals and digital signature solutions"
+                        ],
+                        tech: ["C# ASP", ".Net Core", "WPF", "SQL Server", "Azure", "Rest API", "Xamarin"]
+                    },
+                    {
+                        company: "Israel Innovation Authority",
+                        logo: "IA",
+                        website: "https://innovationisrael.org.il",
+                        title: "Full Stack C# Developer",
+                        duration: "2017 - 2019",
+                        responsibilities: [
+                            "Spearheaded internal management system development",
+                            "Built committee books, digital signatures, and booking systems"
+                        ],
+                        tech: ["C# .Net", "WPF", "SQL Server", "Angular", "Node.js", "SharePoint"]
+                    },
+                    {
+                        company: "Ariel Vimsor",
+                        logo: "AV",
+                        website: "#",
+                        title: "Java Full Stack Developer",
+                        duration: "2016 - 2017",
+                        responsibilities: [
+                            "Developed C&C systems for traffic engineering",
+                            "Controlled IoT road components (sensors, lights)"
+                        ],
+                        tech: ["Java", "Angular JS", "SQL Server", "GIS"]
+                    },
+                    {
+                        company: "Orbotech",
+                        logo: "O",
+                        website: "https://www.kla.com",
+                        title: "R&D Verification Developer",
+                        duration: "2014 - 2016",
+                        responsibilities: [
+                            "Created automation frameworks for PCB testing machines"
+                        ],
+                        tech: ["Squish", "Python", "Bash", "JavaScript"]
+                    }
+                ],
+                skills: [
+                    { icon: "⚙️", name: "Backend Development", items: "C#, .NET Core, ASP.NET, WCF, Windows Services" },
+                    { icon: "🎨", name: "Frontend Development", items: "Angular, React, HTML5, SCSS, JavaScript" },
+                    { icon: "☁️", name: "Database & Cloud", items: "SQL Server, Azure SQL, MySQL, IIS Management" },
+                    { icon: "🔌", name: "Integration & APIs", items: "REST API, Swagger, SAP ERP, Priority, SharePoint" },
+                    { icon: "📱", name: "Mobile & Desktop", items: "Xamarin, MAUI, Android Studio, WPF, WinForms" },
+                    { icon: "🚀", name: "Additional Technologies", items: "Java, Python, Node.js, PHP, GIS" }
+                ]
+            },
+            he: {
+                experience: [
+                    {
+                        company: "ממן",
+                        logo: "M",
+                        website: "https://www.maman.co.il",
+                        title: "מפתח C# Senior Full Stack",
+                        duration: "2024 - היום",
+                        responsibilities: [
+                            "פיתוח מערכות ליבה תפעוליות המשרתות מאות משתמשים",
+                            "ארכיטקטורת שירותי WCF ומבנה רב-שכבתי (UI, BL, DAL)",
+                            "ניהול מחזור חיים מלא: אפיון, פיתוח ובדיקות",
+                            "ניהול תהליכי הפצה (Deployment) בסביבות מרובות"
+                        ],
+                        tech: ["C# WinForms", "WCF", "SQL Server", "IIS", "AngularJS"]
+                    },
+                    {
+                        company: "EMUSE ישראל",
+                        logo: "E",
+                        website: "https://www.emuse.co.il",
+                        title: "מפתח C# Senior Full Stack",
+                        duration: "2019 - 2024",
+                        responsibilities: [
+                            "בניית פלטפורמות מסחר (B2B/B2C) ב-.Net Core",
+                            "אינטגרציית API מורכבת מול SAP ERP ו-Priority",
+                            "פיתוח פורטלים לחשבוניות וחיתום דיגיטלי"
+                        ],
+                        tech: ["C# ASP", ".Net Core", "WPF", "SQL Server", "Azure", "Rest API", "Xamarin"]
+                    },
+                    {
+                        company: "רשות החדשנות",
+                        logo: "IA",
+                        website: "https://innovationisrael.org.il",
+                        title: "מפתח C# Full Stack",
+                        duration: "2017 - 2019",
+                        responsibilities: [
+                            "הובלת פיתוח מערכות ניהול פנימיות",
+                            "בניית מערכות ספר ועדה, חתימות דיגיטליות וניהול משאבים"
+                        ],
+                        tech: ["C# .Net", "WPF", "SQL Server", "Angular", "Node.js", "SharePoint"]
+                    },
+                    {
+                        company: "אריאל וימזור",
+                        logo: "AV",
+                        website: "#",
+                        title: "מפתח Java Full Stack",
+                        duration: "2016 - 2017",
+                        responsibilities: [
+                            "פיתוח מערכות שליטה ובקרה (C&C) לתעבורה",
+                            "שליטה ברכיבי IoT בכבישים (חיישנים, רמזורים)"
+                        ],
+                        tech: ["Java", "Angular JS", "SQL Server", "GIS"]
+                    },
+                    {
+                        company: "אורבוטק",
+                        logo: "O",
+                        website: "https://www.kla.com",
+                        title: "פיתוח אוטומציה ל-R&D",
+                        duration: "2014 - 2016",
+                        responsibilities: [
+                            "פיתוח תשתיות אוטומציה למכונות בדיקת PCB"
+                        ],
+                        tech: ["Squish", "Python", "Bash", "JavaScript"]
+                    }
+                ],
+                skills: [
+                    { icon: "⚙️", name: "פיתוח Backend", items: "C#, .NET Core, ASP.NET, WCF, Windows Services" },
+                    { icon: "🎨", name: "פיתוח Frontend", items: "Angular, React, HTML5, SCSS, JavaScript" },
+                    { icon: "☁️", name: "מסדי נתונים וענן", items: "SQL Server, Azure SQL, MySQL, IIS Management" },
+                    { icon: "🔌", name: "אינטגרציות ו-APIs", items: "REST API, Swagger, SAP ERP, Priority, SharePoint" },
+                    { icon: "📱", name: "מובייל ושולחן עבודה", items: "Xamarin, MAUI, Android Studio, WPF, WinForms" },
+                    { icon: "🚀", name: "טכנולוגיות נוספות", items: "Java, Python, Node.js, PHP, GIS" }
+                ]
+            }
+        };
+
+        function renderTimeline() {
+            const timeline = document.getElementById('timeline');
+            timeline.innerHTML = '';
+            
+            content[currentLang].experience.forEach((job) => {
+                const item = document.createElement('div');
+                item.className = 'timeline-item';
+                item.innerHTML = `
+                    <div class="timeline-icon">💼</div>
+                    <div class="timeline-content">
+                        <div class="company-header">
+                            <div class="company-logo">${job.logo}</div>
+                            <div class="company-info">
+                                <h3>${job.company}</h3>
+                                <a href="${job.website}" target="_blank">Visit ↗</a>
+                            </div>
+                        </div>
+                        <div class="job-title">${job.title}</div>
+                        <div class="duration">${job.duration}</div>
+                        <ul class="responsibilities">
+                            ${job.responsibilities.map(r => `<li>${r}</li>`).join('')}
+                        </ul>
+                        <div class="tech-stack">
+                            ${job.tech.map(t => `<span class="tech-tag">${t}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
+                timeline.appendChild(item);
+            });
+            observeElements();
+        }
+
+        function renderSkills() {
+            const skillsGrid = document.getElementById('skillsGrid');
+            skillsGrid.innerHTML = '';
+            
+            content[currentLang].skills.forEach(skill => {
+                const card = document.createElement('div');
+                card.className = 'skill-card';
+                card.innerHTML = `
+                    <div class="skill-icon">${skill.icon}</div>
+                    <div class="skill-name">${skill.name}</div>
+                    <div class="skill-items">${skill.items}</div>
+                `;
+                skillsGrid.appendChild(card);
+            });
+            observeElements();
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'he' : 'en';
+            const body = document.body;
+            const langBtn = document.querySelector('.lang-switch');
+            
+            if (currentLang === 'he') {
+                body.setAttribute('dir', 'rtl');
+                langBtn.textContent = '🌐 English';
+            } else {
+                body.setAttribute('dir', 'ltr');
+                langBtn.textContent = '🌐 עברית';
+            }
+            
+            document.querySelectorAll('[data-en]').forEach(el => {
+                el.innerHTML  = el.getAttribute('data-' + currentLang);
+            });
+            
+            renderTimeline();
+            renderSkills();
+        }
+
+function downloadCV() {
+    const cvLinks = {
+        en: 'https://smilk12.github.io/my-portfolio/CV-Shmulik-Melamed-EN.pdf',
+        he: 'https://smilk12.github.io/my-portfolio/CV-Shmulik-Melamed-HE.pdf'
+    };
+    
+    // Open in new tab (works reliably)
+    window.open(cvLinks[currentLang], '_blank');
+    
+    // Alternative: Try direct download (may not work due to CORS)
+    // const link = document.createElement('a');
+    // link.href = cvLinks[currentLang];
+    // link.download = `CV-Shmulik-Melamed-${currentLang.toUpperCase()}.pdf`;
+    // link.click();
+}
+
+        function downloadDiploma() {
+            window.open("https://smilk12.github.io/my-portfolio/Diploma-Shenkar-Shmulik-Melamed.PDF","_blank");
+        }
+
+        function observeElements() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.timeline-item, .skill-card').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'all 0.6s ease-out';
+                observer.observe(el);
+            });
+        }
+
+        // Initialize (Start in Hebrew)
+        toggleLanguage();
+
+        // Nav Active State
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-links a');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').slice(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
